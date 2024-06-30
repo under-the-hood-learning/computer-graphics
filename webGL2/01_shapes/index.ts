@@ -138,10 +138,10 @@ function shape(width, height, scale, offsetX, offsetY, triangleVertices) {
         }
 
         vec4 randomColor(float color) {
-            r = color + 0.3;
-            g = color + 0.1;
-            b = color + 0.6;
-            a = color;
+            r = 0.7;
+            g = 0.2;
+            b = 0.1;
+            a = 1.0;
             return vec4(r, g, b, a);
         }   
 
@@ -174,7 +174,7 @@ function shape(width, height, scale, offsetX, offsetY, triangleVertices) {
     canvas.width = width;
     canvas.height = height;
 
-    webGL2.clearColor(0.2, 0.2, 0.1, 0);
+    webGL2.clearColor(0, 0, 0, 0);
     webGL2.clear(webGL2.COLOR_BUFFER_BIT | webGL2.DEPTH_BUFFER_BIT);
     webGL2.viewport(0,0, canvas.width, canvas.height);
 

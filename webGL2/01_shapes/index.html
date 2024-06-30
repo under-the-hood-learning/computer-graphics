@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>WebGL Defining and Rendering a Triangle</title> 
+        <title>WebGL Demo - Shapes and Colors - Under the Hood Learning Plataform</title> 
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     
@@ -73,10 +73,37 @@
             <span class="error-description"></span>            
         </div>
 
-        <div id="app-description-box">
-            <img src="./assets/webgl.png" width="100px">
-            <span class="app-box-title">WebGL Exercise:</span>
-            <span class="app-description">Defining and Rendering a Triangle</span>            
+        <div id="app-box">
+            <div id="library-selection-box">
+
+                <span class="library-box-title">Learning</span>
+        
+                <select id="skill">
+                    <option value="">Computer Graphics</option>
+                </select>            
+                
+                <span class="library-box-title">with</span>         
+                
+                <select id="technology">
+                    <option value="">WebGL2</option>
+                </select>            
+
+                <span class="library-box-title">on</span>  
+
+                <select onchange="{window.location.href = event.target.value}" id="session">
+                    <option value="../01_shapes/index.html">Shapes and Colors</option>
+                    <option value="../02_motion/index.html">Motion and Dynamics</option>
+                    <option value="../03_3D/index.html">3D Principles</option>
+                </select>   
+            </div>
+
+            <div id="plataform-name">
+                <img src="./assets/turtle-alpha-rectangular.png" width="50px" />
+                <span class="app-description">UNDER THE HOOD - Learning Plataform</span>  
+            </div>
+       
+           
+
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>

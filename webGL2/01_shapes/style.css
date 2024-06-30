@@ -8,10 +8,16 @@ html, body {
 
     overflow: hidden;
 
-    background-image: url(./assets/stars-galaxy-3840x2160-10307.jpg);
-    background-size: cover;
+
 
     font-family: 'Courier New', Courier, monospace;
+
+}
+
+body {
+
+    background-image: linear-gradient(90deg, rgb(14, 9, 8), rgba(26, 17, 17, 0.932));
+    background-size: cover;
 
 }
 
@@ -110,12 +116,13 @@ html, body {
     font-weight: 700;
 }
 
-#app-description-box {
+#app-box {
     
     position: absolute;
 
     display: flex;
     flex-direction: column;
+    gap: 10px;
 
     bottom: 40px;
     right: 40px;
@@ -132,8 +139,7 @@ html, body {
     font-weight: 500;
     font-size: 10pt;
     border: 1px solid white;
-    padding: 10px;
-    margin: 2px;
+    padding: 1vw;
 }
 
 .app-box-title {
@@ -142,7 +148,7 @@ html, body {
 }
 
 .app-description {
-    color: #db17ade5;
+    color: #dbdbdbbe;
     font-weight: 700;
 }
 
@@ -157,4 +163,71 @@ html, body {
     display: inline-flex;
     justify-content: center;
     gap: 10px;
+}
+
+#library-selection-box {
+    
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+
+    width: max-content;
+    max-width: 100%;
+    min-width: 200px;
+
+    background-image: linear-gradient(90deg, rgba(26, 26, 26, 0.884) , rgba(41, 38, 38, 0.027));
+
+    color: #fd8080;
+    font-weight: 500;
+    font-size: 10pt;
+    border: 0px solid white;
+    
+    cursor: default;
+}
+
+#plataform-name {
+    
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1vw;
+
+    width: max-content;
+    max-width: 100%;
+    min-width: 200px;
+
+    background-image: linear-gradient(90deg, rgba(26, 26, 26, 0.884) , rgba(41, 38, 38, 0.027));
+
+    color: #fd8080;
+    font-weight: 500;
+    font-size: 10pt;
+    border: 0px solid white;
+    
+    cursor: default;
+}
+
+option, select{
+    border-radius: 0;
+    text-decoration: none;
+    background-color: gray;
+}
+
+.library-box-title {
+    color: #eee;
+    margin: 2px 0;
+}
+
+#skill, #technology, #session {
+    background-color: transparent; 
+    color: rgb(255, 180, 165);
+    border-width: 0;
 }
