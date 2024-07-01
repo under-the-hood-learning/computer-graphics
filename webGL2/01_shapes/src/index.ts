@@ -1,76 +1,14 @@
-let triangleVertices = [-0.5, -0.5, 0.5, -0.5, 0, 0.5];
-let scale : number = 100;
-let offsetX : number = window.innerWidth/2;
-let offsetY : number = window.innerHeight/2;
-let width_in_pixels : number = window.innerWidth; 
-let height_in_pixels : number = window.innerHeight; 
+import * as utils from './utils.js';
+import objects from './objects.js';
+import {config} from './config.js';
 
-const myShape : WebGL2RenderingContext = shape(window.innerWidth, window.innerHeight, scale, offsetX, offsetY, triangleVertices) as WebGL2RenderingContext;
+const myShape : WebGL2RenderingContext = shape(window.innerWidth, window.innerHeight, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices) as WebGL2RenderingContext;
 
-function updateTriangle(new_value, vertex_number, coordinate_number) {
-
-    triangleVertices[vertex_number * 2 + coordinate_number] = new_value;
-
-    shape(width_in_pixels, height_in_pixels, scale, offsetX, offsetY, triangleVertices);
-}
-
-function updateCanvasSize(width?:number, height?:number) {
-    
-    let canvas = document.getElementById("demo-canvas") as HTMLCanvasElement;
-
-    if (width === undefined) {width = 100 * canvas.width/window.innerWidth;}
-    if (height === undefined) {height = 100 * canvas.height/window.innerHeight;}
-
-    width_in_pixels = window.innerWidth * width/100; 
-    height_in_pixels = window.innerHeight * height/100; 
-
-    shape(width_in_pixels, height_in_pixels, scale, offsetX, offsetY, triangleVertices);
-}
-
-function updateOffsetX(new_offsetX:number) {
-
-    offsetX = new_offsetX/100 * window.innerWidth;
-
-    shape(width_in_pixels, height_in_pixels, scale, offsetX, offsetY, triangleVertices);
-}
-
-function updateOffsetY(new_offsetY:number) {
-
-    offsetY = new_offsetY/100 * window.innerHeight;
-
-    shape(width_in_pixels, height_in_pixels, scale, offsetX, offsetY, triangleVertices);
-}
-
-function updateScale(new_scale:number) {
-
-    scale = new_scale;
-
-    shape(width_in_pixels, height_in_pixels, scale, offsetX, offsetY, triangleVertices);
-}
-
-function showError(errorText: string) {
-    console.log(errorText);
-    // $("#error-box").empty();
-
-    const errorBoxDiv = document.getElementById('error-box');
-    if (errorBoxDiv === null){
-        return;
-    }
-
-    const errorElement = document.createElement('p');
-    errorElement.innerText = errorText;
-    errorBoxDiv.appendChild(errorElement);
-}
-
-
-
-showError("");
-
-function shape(width, height, scale, offsetX, offsetY, triangleVertices) {
+export function shape(width, height, scale, clipPositionX, clipPositionY, triangleVertices) {
     
     const canvas = document.getElementById('demo-canvas');
     if (!(canvas instanceof HTMLCanvasElement)) {
-        showError("You've just made a terrible mistake!");
+        utils.showError("You've just made a terrible mistake!");
         return;
     }
             
@@ -170,9 +108,12 @@ function shape(width, height, scale, offsetX, offsetY, triangleVertices) {
     const canvasSizeUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'canvasSize');
 
     //---------------------------------------------------------------------------------
-
-    canvas.width = width;
-    canvas.height = height;
+    // devicePixelRatio = 1;
+    
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
 
     webGL2.clearColor(0, 0, 0, 0);
     webGL2.clear(webGL2.COLOR_BUFFER_BIT | webGL2.DEPTH_BUFFER_BIT);
@@ -190,8 +131,34 @@ function shape(width, height, scale, offsetX, offsetY, triangleVertices) {
 
     webGL2.uniform2f(canvasSizeUniform, canvas.width, canvas.height);
     webGL2.uniform1f(shapeSizeUniform, scale);
-    webGL2.uniform2f(shapeLocationUniform, offsetX, offsetY);
+    webGL2.uniform2f(shapeLocationUniform, ( ( clipPositionX + 1 ) / 2 ) * canvas.width, ( ( clipPositionY + 1) / 2 ) * canvas.height);
     webGL2.drawArrays(webGL2.TRIANGLES, 0, 3);
+
+    //---------------------------------------------------------------------------------
+
+    let auxCanvas = $('#aux-canvas')[0] as HTMLCanvasElement;
+    let Context2D = auxCanvas.getContext('2d');
+    
+    auxCanvas.style.width = `${width}px`;
+    auxCanvas.style.height = `${height}px`;
+    auxCanvas.width = width * devicePixelRatio;
+    auxCanvas.height = height * devicePixelRatio;
+
+    const text = "Screen space";
+    const fontSize = 20;
+    Context2D.font = `${fontSize}px Arial`;
+    Context2D.fillStyle = 'white';
+
+    // Calculate the position to draw the text
+    const textWidth = Context2D.measureText(text).width;
+    const x = (canvas.width - textWidth - 10); // 10 pixels padding from the right edge
+    const y = fontSize; // Drawing the text at the font size height from the top edge
+
+    // Draw the text on the canvas
+    Context2D.fillText(text, x, y);
+
+    //---------------------------------------------------------------------------------
+
 
     return webGL2;
 
