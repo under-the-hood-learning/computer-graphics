@@ -7,10 +7,9 @@ html, body {
     padding: 0;
 
     overflow: hidden;
-
-
-
     font-family: 'Courier New', Courier, monospace;
+
+    cursor: default;
 
 }
 
@@ -116,13 +115,71 @@ canvas {
     font-weight: 700;
 }
 
-#app-box {
-    
+#right-painel {
+
     position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: max-content;
+
+    padding: 5vh 1vw;
+    margin: 0 40px;
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 2vw;
+
+    /* background-color: rgba(255, 255, 255, 0.075); */
+
+
+}
+
+.code-box {
+    display: flex; 
+    flex-direction: column;
+    
+    width: 100%;
+
+    color: white;
+
+}
+
+.code-snippet {
+
+    height: 28vh;
+    width: 100%;
+
+    padding: 10px;
+
+
+    overflow-y: scroll;
+
+    background-color: #3d3535d6;
+
+    border: 1px solid white;
+
+    font-size: 10pt;
+
+}
+
+.code-line {
+    color: white;
+    white-space: nowrap;
+
+    line-height: 20px;
+}
+
+#app-box {
+
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vw;
 
     bottom: 40px;
     right: 40px;
@@ -139,7 +196,7 @@ canvas {
     font-weight: 500;
     font-size: 10pt;
     border: 1px solid white;
-    padding: 1vw;
+    padding: 0.5vw;
 }
 
 .app-box-title {
@@ -180,6 +237,8 @@ canvas {
     max-width: 100%;
     min-width: 200px;
 
+    padding-left: 10px;
+
     background-image: linear-gradient(90deg, rgba(26, 26, 26, 0.884) , rgba(41, 38, 38, 0.027));
 
     color: #fd8080;
@@ -204,6 +263,8 @@ canvas {
     width: max-content;
     max-width: 100%;
     min-width: 200px;
+
+    padding-left: 10px;
 
     background-image: linear-gradient(90deg, rgba(26, 26, 26, 0.884) , rgba(41, 38, 38, 0.027));
 
@@ -238,9 +299,9 @@ option, select{
     z-index: 2;
 
     top: 0;
-    left: 30vw;
+    left: 25vw;
 
-    width: 35vw;
+    width: 25vw;
 
     display: inline-flex;
     justify-content: flex-start;

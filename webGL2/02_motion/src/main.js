@@ -30,10 +30,10 @@ export function motionDemonstration(canvas) {
     // Creating buffers
     // Vertex/position buffers
     const triangleGeometryBuffer = utils.createStaticVertexBuffer(webGL2, Shapes.triangleVertices);
-    const rgbColorBuffer = utils.createStaticVertexBuffer(webGL2, Colors.rgbTriangleColors);
-    const fireyColorBuffer = utils.createStaticVertexBuffer(webGL2, Colors.fireyTriangleColors);
-    // Color buffers
     const squareGeometryBuffer = utils.createStaticVertexBuffer(webGL2, Shapes.squareVertices);
+    // Color buffers
+    const rgbColorBuffer = utils.createStaticVertexBuffer(webGL2, Colors.rgbTriangleColors);
+    const fireyColorBuffer = utils.createStaticVertexBuffer(webGL2, Colors.fireyTriangleColors);    
     const indigoGradientSquareColorsBuffer = utils.createStaticVertexBuffer(webGL2, Colors.indigoGradientSquareColors);
     const graySquareColorsBuffer = utils.createStaticVertexBuffer(webGL2, Colors.graySquareColors);
     // Vertex/position-color interleaved buffer

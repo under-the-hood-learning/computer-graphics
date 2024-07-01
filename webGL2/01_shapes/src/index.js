@@ -13,22 +13,31 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     // console.log(webGL2);
     //---------------------------------------------------------------------------------
     const triangleGeoCPUBuffer = new Float32Array(triangleVertices);
-    //console.log(triangleGeoCPUBuffer);
     const triangleGeoGPUBuffer = webGL2.createBuffer();
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, triangleGeoGPUBuffer);
     webGL2.bufferData(webGL2.ARRAY_BUFFER, triangleGeoCPUBuffer, webGL2.STATIC_DRAW);
+    webGL2.bindBuffer(webGL2.ARRAY_BUFFER, null);
+    const rgbColorBuffer = webGL2.createBuffer();
+    webGL2.bindBuffer(webGL2.ARRAY_BUFFER, rgbColorBuffer);
+    webGL2.bufferData(webGL2.ARRAY_BUFFER, objects.rgbTriangleColors, webGL2.STATIC_DRAW);
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, null);
     //---------------------------------------------------------------------------------
     const vertexShaderSourceCode = `#version 300 es
         precision mediump float;
 
+        in vec3 vertexColor;
         in vec2 vertexPosition;
+
+        out vec3 fragmentColor;
 
         uniform vec2 canvasSize;
         uniform vec2 shapeLocation;
         uniform float shapeSize;
 
         void main() {
+
+            fragmentColor = vertexColor;
+
             vec2 finalVertexPosition = vertexPosition * shapeSize + shapeLocation;
             vec2 clipPosition = (finalVertexPosition / canvasSize) * 2.0 - 1.0;
 
@@ -42,32 +51,12 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     const fragmentShaderSourceCode = `#version 300 es
         precision mediump float;
 
+        in vec3 fragmentColor;
         out vec4 outputColor;
-        float r;
-        float g;
-        float b;
-        float a;
-        uniform float u_time;
-
-        vec2 generateSeed(float time) {
-            return vec2(time, time);
-        }
-
-        float rand(vec2 seed) {
-            return cos(dot(seed.xy, vec2(0.9898, 8.233)));
-        }
-
-        vec4 randomColor(float color) {
-            r = 0.7;
-            g = 0.2;
-            b = 0.1;
-            a = 1.0;
-            return vec4(r, g, b, a);
-        }   
 
         void main() {        
 
-            outputColor = randomColor(rand( generateSeed(u_time) ));
+            outputColor = vec4(fragmentColor, 0.0);
         
         }`;
     const fragmentShader = webGL2.createShader(webGL2.FRAGMENT_SHADER);
@@ -79,7 +68,9 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     webGL2.attachShader(webGL2TriangleProgram, fragmentShader);
     webGL2.linkProgram(webGL2TriangleProgram);
     //---------------------------------------------------------------------------------
+    // Get references to webGL program variables.
     const vertexPositionAttributeLocation = webGL2.getAttribLocation(webGL2TriangleProgram, 'vertexPosition');
+    const vertexColorAttributeLocation = webGL2.getAttribLocation(webGL2TriangleProgram, 'vertexColor');
     const shapeSizeUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'shapeSize');
     const shapeLocationUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'shapeLocation');
     const canvasSizeUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'canvasSize');
@@ -95,8 +86,12 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     //---------------------------------------------------------------------------------
     webGL2.useProgram(webGL2TriangleProgram);
     webGL2.enableVertexAttribArray(vertexPositionAttributeLocation);
+    webGL2.enableVertexAttribArray(vertexColorAttributeLocation);
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, triangleGeoGPUBuffer);
-    webGL2.vertexAttribPointer(vertexPositionAttributeLocation, 2, webGL2.FLOAT, false, 8, 0);
+    webGL2.vertexAttribPointer(vertexPositionAttributeLocation, 2, webGL2.FLOAT, false, 0, 0);
+    webGL2.bindBuffer(webGL2.ARRAY_BUFFER, rgbColorBuffer);
+    webGL2.vertexAttribPointer(vertexColorAttributeLocation, 3, webGL2.UNSIGNED_BYTE, true, 0, 0);
+    webGL2.bindVertexArray(null);
     //---------------------------------------------------------------------------------
     webGL2.uniform2f(canvasSizeUniform, canvas.width, canvas.height);
     webGL2.uniform1f(shapeSizeUniform, scale);
@@ -110,7 +105,7 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     auxCanvas.width = width * devicePixelRatio;
     auxCanvas.height = height * devicePixelRatio;
     const text = "Screen space";
-    const fontSize = 20;
+    const fontSize = 20 * devicePixelRatio;
     Context2D.font = `${fontSize}px Arial`;
     Context2D.fillStyle = 'white';
     // Calculate the position to draw the text

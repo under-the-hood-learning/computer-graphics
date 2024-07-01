@@ -90,24 +90,73 @@
             <span class="error-description"></span>            
         </div>
 
+        <div id="right-painel">
+            
+            <div class="code-box">
+                <p>Vertex Shader</p>
+                <div id="vertex-shader" class="code-snippet">
+                    <div class="code-line">#version 300 es</div>
+                    <div class="code-line">precision mediump float;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line" style="color: rgb(255, 202, 57);">in vec2 vertexPosition;</div>
+                    <div class="code-line" style="color: rgb(199, 57, 255);">in vec3 vertexColor;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line" style="color: rgb(92, 255, 59);">out vec3 fragmentColor;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line" style="color: rgb(57, 57, 255);">uniform vec2 canvasSize;</div>
+                    <div class="code-line" style="color: rgb(235, 106, 21);">uniform vec2 shapeLocation;</div>
+                    <div class="code-line" style="color: rgb(255, 40, 25);">uniform float shapeSize;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">void main() {</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">&nbsp; vec2 finalVertexPosition = <span style="color: rgb(255, 202, 57);">vertexPosition</span> * <span style="color: rgb(255, 40, 25);">shapeSize</span> + <span style="color: rgb(235, 106, 21);">shapeLocation</span>;</div>
+                    <div class="code-line">&nbsp; vec2 clipPosition = (finalVertexPosition / <span style="color: rgb(57, 57, 255);">canvasSize</span>) * 2.0 - 1.0;</div>
+                    <div class="code-line">&nbsp; gl_Position = vec4(clipPosition, 0.0, 1.0);</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">}</div>
+                </div>
+            </div>
+
+            <div class="code-box">
+                <p>Fragment Shader</p>
+                <div id="fragment-shader" class="code-snippet">
+
+                    <div class="code-line">#version 300 es</div>
+                    <div class="code-line">precision mediump float;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line" style="color: rgb(92, 255, 59);">in vec3 fragmentColor;</div>
+                    <div class="code-line">out vec4 outputColor;</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">void main() {</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">&nbsp; outputColor = vec4(fragmentColor, 0.0);</div>
+                    <div class="code-line">&nbsp;</div>
+                    <div class="code-line">}</div>
+
+
+                </div>            
+            </div>
+
+        </div>
+
         <div id="app-box">
             <div id="library-selection-box">
 
                 <span class="library-box-title">Learning</span>
         
-                <select id="skill">
+                <select id="skill" title="skill">
                     <option value="">Computer Graphics</option>
                 </select>            
                 
                 <span class="library-box-title">with</span>         
                 
-                <select id="technology">
+                <select id="technology" title="technology">
                     <option value="">WebGL2</option>
                 </select>            
 
                 <span class="library-box-title">on</span>  
 
-                <select onchange="{window.location.href = event.target.value}" id="session">
+                <select onchange="{window.location.href = event.target.value}" id="session" title="session">
                     <option value="../01_shapes/index.html">Shapes and Colors</option>
                     <option value="../02_motion/index.html">Motion and Dynamics</option>
                     <option value="../03_3D/index.html">3D Principles</option>
@@ -119,9 +168,7 @@
                 <span class="app-description">UNDER THE HOOD - Learning Plataform</span>  
             </div>
        
-           
-
-        </div>
+        </div>    
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script type="module" src="./src/index.js"></script>
