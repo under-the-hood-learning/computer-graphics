@@ -1,26 +1,23 @@
-import * as utils from './utils.js';
+import * as controllers from './controllers.js';
+import { extractNumbers, drawPoint, FromClipSpaceTo2DCanvasCoordinatesSystem } from './utils.js';
 import objects from './objects.js';
 import {config} from './config.js';
 
-const myShape : WebGL2RenderingContext = shape(window.innerWidth, window.innerHeight, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices) as WebGL2RenderingContext;
+const myShape : WebGL2RenderingContext = shapesAndColors(window.innerWidth, window.innerHeight, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices, objects.rgbTriangleColors) as WebGL2RenderingContext;
 
-export function shape(width, height, scale, clipPositionX, clipPositionY, triangleVertices) {
+export function shapesAndColors(width, height, scale, clipPositionX, clipPositionY, vertexes, colors : Uint8Array) {
     
     const canvas = document.getElementById('demo-canvas');
     if (!(canvas instanceof HTMLCanvasElement)) {
-        utils.showError("You've just made a terrible mistake!");
+        controllers.showError("You've just made a terrible mistake!");
         return;
-    }
-            
-    //console.log(canvas);
+    }  
 
     const webGL2 = canvas.getContext('webgl2');
 
-    // console.log(webGL2);
-
     //---------------------------------------------------------------------------------
 
-    const triangleGeoCPUBuffer = new Float32Array(triangleVertices);
+    const triangleGeoCPUBuffer = new Float32Array(vertexes);
     const triangleGeoGPUBuffer = webGL2.createBuffer();
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, triangleGeoGPUBuffer);
     webGL2.bufferData(webGL2.ARRAY_BUFFER, triangleGeoCPUBuffer, webGL2.STATIC_DRAW)
@@ -28,7 +25,7 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
 
     const rgbColorBuffer = webGL2.createBuffer();
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, rgbColorBuffer);
-    webGL2.bufferData(webGL2.ARRAY_BUFFER, objects.rgbTriangleColors, webGL2.STATIC_DRAW);
+    webGL2.bufferData(webGL2.ARRAY_BUFFER, colors, webGL2.STATIC_DRAW);
     webGL2.bindBuffer(webGL2.ARRAY_BUFFER, null);
 
     //---------------------------------------------------------------------------------
@@ -132,9 +129,10 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
     webGL2.drawArrays(webGL2.TRIANGLES, 0, 3);
 
     //---------------------------------------------------------------------------------
+    // Drawing notes on auxiliary canvas.
 
     let auxCanvas = $('#aux-canvas')[0] as HTMLCanvasElement;
-    let Context2D = auxCanvas.getContext('2d');
+    let auxCanvasContext = auxCanvas.getContext('2d');
     
     auxCanvas.style.width = `${width}px`;
     auxCanvas.style.height = `${height}px`;
@@ -143,19 +141,35 @@ export function shape(width, height, scale, clipPositionX, clipPositionY, triang
 
     const text = "Screen space";
     const fontSize = 20 * devicePixelRatio;
-    Context2D.font = `${fontSize}px Arial`;
-    Context2D.fillStyle = 'white';
+    auxCanvasContext.font = `${fontSize}px Arial`;
+    auxCanvasContext.fillStyle = 'white';
 
     // Calculate the position to draw the text
-    const textWidth = Context2D.measureText(text).width;
+    const textWidth = auxCanvasContext.measureText(text).width;
     const x = (canvas.width - textWidth - 10); // 10 pixels padding from the right edge
     const y = fontSize; // Drawing the text at the font size height from the top edge
 
     // Draw the text on the canvas
-    Context2D.fillText(text, x, y);
+    auxCanvasContext.fillText(text, x, y);
 
     //---------------------------------------------------------------------------------
+    // Drawing vertexes on clip space canvas
 
+    let clipSpaceCanvas = document.getElementById('clip-space-canvas') as HTMLCanvasElement;
+    let clipSpaceContext = clipSpaceCanvas.getContext('2d');
+
+    clipSpaceCanvas.style.width = `${150}px`;
+    clipSpaceCanvas.style.height = `${150}px`;
+    clipSpaceCanvas.width = 150 * devicePixelRatio;
+    clipSpaceCanvas.height = 150 * devicePixelRatio;
+
+    let vertexes2D = FromClipSpaceTo2DCanvasCoordinatesSystem(new Array(... vertexes), clipSpaceCanvas);
+
+    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 0], vertexes2D[1 + 2 * 0], 5, colors.slice(0, 3));
+    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 1], vertexes2D[1 + 2 * 1], 5, colors.slice(3, 6));
+    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 2], vertexes2D[1 + 2 * 2], 5, colors.slice(6, 9));
+
+    //---------------------------------------------------------------------------------
 
     return webGL2;
 

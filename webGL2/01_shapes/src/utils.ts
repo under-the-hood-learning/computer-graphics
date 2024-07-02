@@ -1,131 +1,65 @@
-import { config } from "../src/config.js";
-import objects from "../src/objects.js";
-import { shape } from "../src/index.js";
+export let hexToRgbArray = function(hex) {
+  // Remove the hash at the start if it's there
+  hex = hex.replace(/^#/, '');
 
+  // Parse the three components
+  let bigint = parseInt(hex, 16);
+  let r = (bigint >> 16) & 255;
+  let g = (bigint >> 8) & 255;
+  let b = bigint & 255;
 
-
-export let updateTriangle = function(new_value, vertex_number, coordinate_number) {
-
-    objects.triangleVertices[vertex_number * 2 + coordinate_number] = new_value;
-
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
+  return [r, g, b];
 }
 
-export let updateCanvasWidth = function(width?:number) {
-    
-    let canvas = document.getElementById("demo-canvas") as HTMLCanvasElement;
+export let rgbToHex = function(rgbArray : Uint8Array) {
 
-    config.width_in_pixels = window.innerWidth * width/100; 
+    let hexStr = "#" + Array.from(rgbArray).map(value => {
+        // Convert each number to a two-digit hexadecimal string
+        let hex = value.toString(16);
+        return  hex.length === 1 ? '0' + hex : hex;
+        
+    }).join('');
 
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
+
+    return hexStr;
 }
 
-export let updateCanvasHeight = function(height?:number) {
-    
-    let canvas = document.getElementById("demo-canvas") as HTMLCanvasElement;
+export let extractNumbers = function (input : string) {
+   
+    const numericString = input.replace(/[^0-9.-]/g, '');
 
-    config.height_in_pixels = window.innerHeight * height/100; 
-
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
-}
-
-export let updateclipPositionX = function(new_clipPositionX:number) {
-
-    config.clipPositionX = new_clipPositionX;
-
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
+    return parseFloat(numericString);
 
 }
 
-export let updateclipPositionY = function(new_clipPositionY:number) {
+export let drawPoint = function(context : CanvasRenderingContext2D, x : number, y : number, size : number, color : Uint8Array) {
 
-    config.clipPositionY = new_clipPositionY;
-    
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
+    let radius = size;
+    let hexColor = rgbToHex(color);
+
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle
+    context.fillStyle = hexColor; // Color of the point
+    context.fill();
+
 }
 
-export let updateScale = function(new_scale:number) {
+export let FromClipSpaceTo2DCanvasCoordinatesSystem = function(clipSpaceArray : Array<number>, canvas) {
 
-    config.scale = new_scale;
+    // For X Coordinates
+    for (let i=0; i < clipSpaceArray.length; i = i + 2) {
 
-    shape(config.width_in_pixels, config.height_in_pixels, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices);
-}
+        clipSpaceArray[i] = ((clipSpaceArray[i] + 1) / 2 ) * canvas.width;
 
-export let showError = function(errorText: string) {
-    console.log(errorText);
-    // $("#error-box").empty();
+    };
 
-    const errorBoxDiv = document.getElementById('error-box');
-    if (errorBoxDiv === null){
-        return;
+    // For X Coordinates
+    for (let i=1; i < clipSpaceArray.length; i = i + 2) {
+
+        clipSpaceArray[i] = ( 1 - ((clipSpaceArray[i] + 1) / 2 ) ) * canvas.height;
+
     }
 
-    const errorElement = document.createElement('p');
-    errorElement.innerText = errorText;
-    errorBoxDiv.appendChild(errorElement);
-}
+    return clipSpaceArray;
 
-document.getElementById("vertexA-X").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 0, 0);
-})
-
-document.getElementById("vertexA-Y").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 0, 1);
-})
-
-document.getElementById("vertexB-X").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 1, 0);
-})
-
-document.getElementById("vertexB-Y").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 1, 1);
-})
-
-document.getElementById("vertexC-X").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 2, 0);
-})
-
-document.getElementById("vertexC-Y").addEventListener('input', (event) => {
-    let element = event.target as HTMLInputElement;
-    updateTriangle(element.value, 2, 1);
-})
-
-document.getElementById("canvas-width").addEventListener('input', (event) => {
-
-    let element = event.target as HTMLInputElement;
-    updateCanvasWidth(Number(element.value));
-
-})
-
-document.getElementById("canvas-height").addEventListener('input', (event) => {
-
-    let element = event.target as HTMLInputElement;
-    updateCanvasHeight(Number(element.value));
-
-})
-
-document.getElementById("x-clip-position").addEventListener('input', (event) => {
-
-    let element = event.target as HTMLInputElement;
-    updateclipPositionX(Number(element.value));
-
-})
-
-document.getElementById("y-clip-position").addEventListener('input', (event) => {
-
-    let element = event.target as HTMLInputElement;
-    updateclipPositionY(Number(element.value));
-
-})
-
-document.getElementById("scale").addEventListener('input', (event) => {
-
-    let element = event.target as HTMLInputElement;
-    updateScale(Number(element.value));
-
-})
+} 

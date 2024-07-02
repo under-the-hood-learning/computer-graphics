@@ -12,82 +12,98 @@
             <canvas id="demo-canvas"></canvas>
             <canvas id="aux-canvas"></canvas>
         </div>
-            
-        <div id="factory-painel" class="">
-
-            <div class="object-image-button">
-                <img class="object-type-image" src="./assets/triangle.png">
-            </div>
-
-            <div class="object-image-button">
-                <img class="object-type-image" src="./assets/square.png">
-            </div>
-
-            <div class="object-image-button">
-                <img class="object-type-image" src="./assets/polygon.png">
-            </div>
-
-        </div>
+        
                 
-        <div id="control-box">
-            <span class="control-box-title">Controls:</span>
-            
-            <div class="parameter-controler">
-                <div style="display: inline-flex; justify-content: center; align-items: center; gap: 10px; margin: 8px;">
-                      
+        <div id="left-painel">
+
+            <div id="geometries-painel" class="">
+
+                <div class="object-image-button">
+                    <img class="object-type-image" src="./assets/triangle.png">
+                </div>
+    
+                <div class="object-image-button">
+                    <img class="object-type-image" src="./assets/square.png">
+                </div>
+    
+                <div class="object-image-button">
+                    <img class="object-type-image" src="./assets/polygon.png">
+                </div>
+    
+            </div>
+
+            <div id="clip-space-container">
+                
+                <div id="clip-space-controls">
+
                     <div style="display: flex; flex-direction: column;">
                         <div class="coordinates">
                             <span class="control-description" style="color: rgba(208, 195, 18, 0);">Vertex X</span> 
-                            <div class="vertex-coordinate">X</div>
-                            <div class="vertex-coordinate">Y</div>                         </div>
+                            <div class="vertex-coordinate" style="color: white;">X</div>
+                            <div class="vertex-coordinate" style="color: white;">Y</div>                         
+                            <div class="vertex-coordinate" style="color: white;">Color</div>           
+                        </div>
                         <div class="coordinates">
                             <span class="control-description" style="color: rgb(208, 195, 18);">Vertex A</span> 
                             <input id="vertexA-X" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
                             <input id="vertexA-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                            <input id="vertexA-color" data-index="0" type="color" value="#ff0000"  class="vertex-color">
                         </div>
                         <div class="coordinates">
                             <span class="control-description" style="color: rgb(208, 195, 18);">Vertex B</span> 
                             <input id="vertexB-X" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
                             <input id="vertexB-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                            <input id="vertexB-color" data-index="1" type="color" value="#1dff00" class="vertex-color">
                         </div>
                         <div class="coordinates">
                             <span class="control-description" style="color: rgb(208, 195, 18);">Vertex C</span> 
                             <input id="vertexC-X" type="number" min="-1.00" max="1.00" value="-0.00" step="0.05" class="vertex-coordinate">                
                             <input id="vertexC-Y" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
+                            <input id="vertexC-color" data-index="2" type="color" value="#0015ff" class="vertex-color">
                         </div>
                         
 
                     </div>
 
                 </div>
+                
+                <div id="clip-space-box">
+                    <canvas id="clip-space-canvas"></canvas>
+                </div>
+
             </div>
 
-            <div class="parameter-controler">
-                <span class="control-description" style="color: blue;">Canvas Width</span>   
-                <input id="canvas-width" oninput="{}" type="range" min="0" max="100" value="100" class="" />
-            </div>
-            <div class="parameter-controler">
-                <span class="control-description" style="color: blue;">Canvas Height</span>      
-                <input id="canvas-height" type="range" min="0" max="100" value="100" class="" />
-            </div>
-            <div class="parameter-controler">
-                <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position X</span>   
-                <input id="x-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
-            </div>
-            <div class="parameter-controler">
-                <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position Y</span>      
-                <input id="y-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
-            </div>
-            <div class="parameter-controler">
-                <span class="control-description" style="color: rgb(207, 51, 34);">Scale</span>      
-                <input id="scale" type="range" min="0" max="1000" value="100" class="" />
+            <div id="screen-space-controls">
+
+                <div class="parameter-controler">
+                    <span class="control-description" style="color: blue;">Canvas Width</span>   
+                    <input id="canvas-width" oninput="{}" type="range" min="0" max="100" value="100" class="" />
+                </div>
+                <div class="parameter-controler">
+                    <span class="control-description" style="color: blue;">Canvas Height</span>      
+                    <input id="canvas-height" type="range" min="0" max="100" value="100" class="" />
+                </div>
+                <div class="parameter-controler">
+                    <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position X</span>   
+                    <input id="x-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
+                </div>
+                <div class="parameter-controler">
+                    <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position Y</span>      
+                    <input id="y-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
+                </div>
+                <div class="parameter-controler">
+                    <span class="control-description" style="color: rgb(207, 51, 34);">Scale</span>      
+                    <input id="scale" type="range" min="0" max="1000" value="100" class="" />
+                </div>
+
             </div>
 
-        </div>
+            <div id="error-box">
+                <span class="error-box-title">Error log:</span>
+                <span class="error-description"></span>            
+            </div>
+    
 
-        <div id="error-box">
-            <span class="error-box-title">Error log:</span>
-            <span class="error-description"></span>            
         </div>
 
         <div id="right-painel">
@@ -109,6 +125,8 @@
                     <div class="code-line">&nbsp;</div>
                     <div class="code-line">void main() {</div>
                     <div class="code-line">&nbsp;</div>
+                    <div class="code-line">&nbsp; <span style="color: rgb(92, 255, 59);">fragmentColor</span> = <span style="color: rgb(199, 57, 255);">vertexColor;</span></div>
+                    <div class="code-line">&nbsp;</div>
                     <div class="code-line">&nbsp; vec2 finalVertexPosition = <span style="color: rgb(255, 202, 57);">vertexPosition</span> * <span style="color: rgb(255, 40, 25);">shapeSize</span> + <span style="color: rgb(235, 106, 21);">shapeLocation</span>;</div>
                     <div class="code-line">&nbsp; vec2 clipPosition = (finalVertexPosition / <span style="color: rgb(57, 57, 255);">canvasSize</span>) * 2.0 - 1.0;</div>
                     <div class="code-line">&nbsp; gl_Position = vec4(clipPosition, 0.0, 1.0);</div>
@@ -129,7 +147,7 @@
                     <div class="code-line">&nbsp;</div>
                     <div class="code-line">void main() {</div>
                     <div class="code-line">&nbsp;</div>
-                    <div class="code-line">&nbsp; outputColor = vec4(fragmentColor, 0.0);</div>
+                    <div class="code-line">&nbsp; outputColor = vec4(<span style="color: rgb(92, 255, 59);">fragmentColor</span>, 0.0);</div>
                     <div class="code-line">&nbsp;</div>
                     <div class="code-line">}</div>
 
@@ -165,7 +183,7 @@
 
             <div id="plataform-name">
                 <img src="./assets/turtle-alpha-rectangular.png" width="50px" />
-                <span class="app-description">UNDER THE HOOD - Learning Plataform</span>  
+                <span class="app-description">UNDER THE HOOD - WEB LABS</span>  
             </div>
        
         </div>    
