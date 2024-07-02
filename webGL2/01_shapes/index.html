@@ -36,30 +36,30 @@
                 
                 <div id="clip-space-controls">
 
-                    <div style="display: flex; flex-direction: column;">
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
                         <div class="coordinates">
-                            <span class="control-description" style="color: rgba(208, 195, 18, 0);">Vertex X</span> 
-                            <div class="vertex-coordinate" style="color: white;">X</div>
-                            <div class="vertex-coordinate" style="color: white;">Y</div>                         
-                            <div class="vertex-coordinate" style="color: white;">Color</div>           
+                            <span class="control-description">vertex</span> 
+                            <div class="vertex-coordinate" style="color: white;">x</div>
+                            <div class="vertex-coordinate" style="color: white;">y</div>                         
+                            <div class="vertex-coordinate" style="color: white;">color</div>           
                         </div>
                         <div class="coordinates">
-                            <span class="control-description" style="color: rgb(208, 195, 18);">Vertex A</span> 
+                            <span class="control-description" >1</span> 
                             <input id="vertexA-X" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
                             <input id="vertexA-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
-                            <input id="vertexA-color" data-index="0" type="color" value="#ff0000"  class="vertex-color">
+                            <div class="center"><input id="vertexA-color" data-index="0" type="color" value="#ff0000"  class="vertex-color"></div>
                         </div>
                         <div class="coordinates">
-                            <span class="control-description" style="color: rgb(208, 195, 18);">Vertex B</span> 
+                            <span class="control-description" >2</span> 
                             <input id="vertexB-X" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
                             <input id="vertexB-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
-                            <input id="vertexB-color" data-index="1" type="color" value="#1dff00" class="vertex-color">
+                            <div class="center"><input id="vertexB-color" data-index="1" type="color" value="#1dff00" class="vertex-color"></div>
                         </div>
                         <div class="coordinates">
-                            <span class="control-description" style="color: rgb(208, 195, 18);">Vertex C</span> 
+                            <span class="control-description" >3</span> 
                             <input id="vertexC-X" type="number" min="-1.00" max="1.00" value="-0.00" step="0.05" class="vertex-coordinate">                
                             <input id="vertexC-Y" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
-                            <input id="vertexC-color" data-index="2" type="color" value="#0015ff" class="vertex-color">
+                            <div class="center"><input id="vertexC-color" data-index="2" type="color" value="#0015ff" class="vertex-color"></div>
                         </div>
                         
 
@@ -104,36 +104,7 @@
     
                     </div>
                 </div>
-                <!-- <div class="parameter-controler">
-                    <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position X</span>   
-                    <input id="x-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
-                    <div class="range-current-value">
         
-                        <output id="origin-x-in-pixels">0px</output>
-                        <output id="origin-x-proportion">0%</output>
-    
-                    </div>
-                </div>
-                <div class="parameter-controler">
-                    <span class="control-description" style="color: rgb(207, 106, 34);">Clip Position Y</span>      
-                    <input id="y-clip-position" type="range" min="-1" max="1" value="0" step="0.001" class="" />
-                    <div class="range-current-value">
-        
-                        <output id="origin-y-in-pixels">0px</output>
-                        <output id="origin-y-proportion">0%</output>
-    
-                    </div>
-                </div>
-                <div class="parameter-controler">
-                    <span class="control-description" style="color: rgb(207, 51, 34);">Scale</span>      
-                    <input id="scale" type="range" min="0" max="10" value="1" class="">
-                    <div class="range-current-value">
-        
-                        <output id="scale-display-value">1X</output>
-    
-                    </div>
-                </div> -->
-
             </div>
 
             <div id="error-box">
