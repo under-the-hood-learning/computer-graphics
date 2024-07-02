@@ -1,7 +1,20 @@
 import config from "./config.js";
-import objects from "./objects.js";
-import { renderShapeWithWebGL2 } from "./utils.js";
+import geometry from "./geometry.js";
+import { buildCircleVertexBuffer, renderShapeWithWebGL2 } from "./utils.js";
 import { hexToRgbArray } from "./utils.js";
+import objects from "./objects.js";
+export function initializeControllers() {
+    $('#width-in-pixels').html(String(config.width_in_pixels.toFixed(2)) + "px");
+    $('#width-proportion').html(String((100 * config.width_in_pixels / window.innerWidth).toFixed(0)) + "%");
+    $('#height-in-pixels').html(String(config.height_in_pixels.toFixed(2)) + "px");
+    $('#height-proportion').html(String((100 * config.height_in_pixels / window.innerHeight).toFixed(0)) + "%");
+    let devicePixelRelationController = document.getElementById("device-pixel-ratio");
+    devicePixelRelationController.max = devicePixelRatio.toString();
+    devicePixelRatio = 1.00;
+    let devicePixelRelationValue = document.getElementById("device-pixel-ratio-value");
+    devicePixelRelationValue.value = devicePixelRatio.toFixed(2).toString();
+    // utils.showError("It's everything good.");
+}
 export let updateCanvasWidth = function (width) {
     config.width_in_pixels = window.innerWidth * width / 100;
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
@@ -38,14 +51,30 @@ export let updateScale = function (new_scale) {
     $('#scale-display-value').html(String((config.scale).toFixed(0)) + "X");
 };
 export let updateTriangleVertexes = function (new_value, vertex_number, coordinate_number) {
-    objects.triangleVertices[vertex_number * 2 + coordinate_number] = Number(new_value);
+    geometry.triangleVertices[vertex_number * 2 + coordinate_number] = new_value;
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updateSquareVertexes = function (new_value, vertex_number, coordinate_number) {
+    geometry.squareVertices[vertex_number * 2 + coordinate_number] = Number(new_value);
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
 export let updateTriangleVertexColor = function (new_color, vertexNumber) {
     let rgbArray = (hexToRgbArray(new_color));
-    objects.rgbTriangleColors[0 + 3 * vertexNumber] = rgbArray[0];
-    objects.rgbTriangleColors[1 + 3 * vertexNumber] = rgbArray[1];
-    objects.rgbTriangleColors[2 + 3 * vertexNumber] = rgbArray[2];
+    geometry.rgbTriangleColors[0 + 3 * vertexNumber] = rgbArray[0];
+    geometry.rgbTriangleColors[1 + 3 * vertexNumber] = rgbArray[1];
+    geometry.rgbTriangleColors[2 + 3 * vertexNumber] = rgbArray[2];
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updateSquareVertexColor = function (new_color, vertexNumber) {
+    let rgbArray = (hexToRgbArray(new_color));
+    geometry.squareColors[0 + 3 * vertexNumber] = rgbArray[0];
+    geometry.squareColors[1 + 3 * vertexNumber] = rgbArray[1];
+    geometry.squareColors[2 + 3 * vertexNumber] = rgbArray[2];
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updateCircleCenter = function (new_value, coordinate) {
+    config.circle_center[coordinate] = Number(new_value);
+    config.shape = new objects.Shape(buildCircleVertexBuffer(), geometry.circleColors);
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
 export let updateDevicePixelRatio = function (new_value) {
@@ -54,40 +83,52 @@ export let updateDevicePixelRatio = function (new_value) {
     devicePixelRationController.value = new_value.toString();
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
-export let showError = function (errorText) {
-    console.log(errorText);
-    // $("#error-box").empty();
-    const errorBoxDiv = document.getElementById('error-box');
-    if (errorBoxDiv === null) {
-        return;
-    }
-    const errorElement = document.createElement('p');
-    errorElement.innerText = errorText;
-    errorBoxDiv.appendChild(errorElement);
+export let drawTriangle = function () {
+    config.shape = new objects.Shape(geometry.triangleVertices, geometry.rgbTriangleColors);
+    $(".vertices-control").css('display', 'none');
+    $("#triangle-vertices").css('display', 'flex');
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
-document.getElementById("vertexA-X").addEventListener('input', (event) => {
+export let drawSquare = function () {
+    config.shape = new objects.Shape(geometry.squareVertices, geometry.squareColors);
+    $(".vertices-control").css('display', 'none');
+    $("#square-vertices").css('display', 'flex');
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let drawPolygon = function () {
+    config.shape = new objects.Shape(geometry.circleVertices, geometry.circleColors);
+    $(".vertices-control").css('display', 'none');
+    $("#polygon-vertices").css('display', 'flex');
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+$('#triangle-vertices').find('.vertex-coordinate').on('input', (event) => {
     let element = event.target;
-    updateTriangleVertexes(element.value, 0, 0);
+    let value = Number(element.value);
+    let vertexNumber = Number(element.dataset.index);
+    let vertexCoordinate = Number(element.dataset.coordinate);
+    updateTriangleVertexes(value, vertexNumber, vertexCoordinate);
 });
-document.getElementById("vertexA-Y").addEventListener('input', (event) => {
+$('#square-vertices').find('.vertex-coordinate').on('input', (event) => {
     let element = event.target;
-    updateTriangleVertexes(element.value, 0, 1);
+    let value = Number(element.value);
+    let vertexNumber = Number(element.dataset.index);
+    let vertexCoordinate = Number(element.dataset.coordinate);
+    updateSquareVertexes(value, vertexNumber, vertexCoordinate);
 });
-document.getElementById("vertexB-X").addEventListener('input', (event) => {
+$('#triangle-vertices').find('.vertex-color').on('input', (event) => {
     let element = event.target;
-    updateTriangleVertexes(element.value, 1, 0);
+    let vertexIndex = element.dataset.index;
+    updateTriangleVertexColor(element.value, Number(vertexIndex));
 });
-document.getElementById("vertexB-Y").addEventListener('input', (event) => {
+$('#square-vertices').find('.vertex-color').on('input', (event) => {
     let element = event.target;
-    updateTriangleVertexes(element.value, 1, 1);
+    let vertexIndex = element.dataset.index;
+    updateSquareVertexColor(element.value, Number(vertexIndex));
 });
-document.getElementById("vertexC-X").addEventListener('input', (event) => {
+$('.circle-center').on('input', (event) => {
     let element = event.target;
-    updateTriangleVertexes(element.value, 2, 0);
-});
-document.getElementById("vertexC-Y").addEventListener('input', (event) => {
-    let element = event.target;
-    updateTriangleVertexes(element.value, 2, 1);
+    let coordinate = element.dataset.coordinate;
+    updateCircleCenter(element.value, coordinate);
 });
 document.getElementById("canvas-width").addEventListener('input', (event) => {
     let element = event.target;
@@ -101,8 +142,12 @@ document.getElementById("device-pixel-ratio").addEventListener('input', (event) 
     let element = event.target;
     updateDevicePixelRatio(Number(element.value));
 });
-$('.vertex-color').on('input', (event) => {
-    let element = event.target;
-    let vertexIndex = element.dataset.index;
-    updateTriangleVertexColor(element.value, Number(vertexIndex));
+document.getElementById('draw-triangle').addEventListener('click', () => {
+    drawTriangle();
+});
+document.getElementById('draw-square').addEventListener('click', () => {
+    drawSquare();
+});
+document.getElementById('draw-polygon').addEventListener('click', () => {
+    drawPolygon();
 });

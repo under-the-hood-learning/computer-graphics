@@ -1,5 +1,43 @@
-import * as controllers from './controllers.js';
 import config from './config.js';
+export let showError = function (errorText) {
+    console.log(errorText);
+    // $("#error-box").empty();
+    const errorBoxDiv = document.getElementById('error-box');
+    if (errorBoxDiv === null) {
+        return;
+    }
+    errorBoxDiv.style.display = "flex";
+    const errorElement = document.createElement('p');
+    errorElement.innerText = errorText;
+    errorBoxDiv.appendChild(errorElement);
+};
+export let buildCircleVertexBuffer = function () {
+    const vertexData = [];
+    const angle_increment = (Math.PI * 2 / config.circle_segment_count);
+    for (let i = 0; i < config.circle_segment_count; i++) {
+        const vertex1Angle = i * angle_increment;
+        const vertex2Angle = (i + 1) * angle_increment;
+        const x1 = Math.cos(vertex1Angle) / 10;
+        const y1 = Math.sin(vertex1Angle) / 10;
+        const x2 = Math.cos(vertex2Angle) / 10;
+        const y2 = Math.sin(vertex2Angle) / 10;
+        let centerX = config.circle_center[0];
+        let centerY = config.circle_center[1];
+        vertexData.push(centerX, centerY);
+        vertexData.push(x1 + centerX, y1 + centerY);
+        vertexData.push(x2 + centerX, y2 + centerY);
+    }
+    return vertexData;
+};
+export let buildCircleColorBuffer = function () {
+    const vertexData = [];
+    for (let i = 0; i < config.circle_segment_count; i++) {
+        vertexData.push(255, 255, 255);
+        vertexData.push(255, 255, 255);
+        vertexData.push(255, 255, 255);
+    }
+    return vertexData;
+};
 export let hexToRgbArray = function (hex) {
     // Remove the hash at the start if it's there
     hex = hex.replace(/^#/, '');
@@ -38,21 +76,9 @@ export let FromClipSpaceTo2DCanvasCoordinatesSystem = function (clipSpaceArray, 
     }
     return clipSpaceArray;
 };
-export function initializeControllers() {
-    $('#width-in-pixels').html(String(config.width_in_pixels.toFixed(2)) + "px");
-    $('#width-proportion').html(String((100 * config.width_in_pixels / window.innerWidth).toFixed(0)) + "%");
-    $('#height-in-pixels').html(String(config.height_in_pixels.toFixed(2)) + "px");
-    $('#height-proportion').html(String((100 * config.height_in_pixels / window.innerHeight).toFixed(0)) + "%");
-    let devicePixelRelationController = document.getElementById("device-pixel-ratio");
-    devicePixelRelationController.max = devicePixelRatio.toString();
-    devicePixelRatio = 1.00;
-    let devicePixelRelationValue = document.getElementById("device-pixel-ratio-value");
-    devicePixelRelationValue.value = devicePixelRatio.toFixed(2).toString();
-    controllers.showError("It's everything good.");
-}
 export function renderShapeWithWebGL2(shape, width, height, canvas) {
     if (!(canvas instanceof HTMLCanvasElement)) {
-        controllers.showError("Something went wrong.");
+        showError("Something went wrong.");
         return;
     }
     const webGL2 = canvas.getContext('webgl2');
@@ -126,7 +152,7 @@ export function renderShapeWithWebGL2(shape, width, height, canvas) {
     webGL2.vertexAttribPointer(vertexColorAttributeLocation, 3, webGL2.UNSIGNED_BYTE, true, 0, 0);
     webGL2.bindVertexArray(null);
     //---------------------------------------------------------------------------------
-    webGL2.drawArrays(webGL2.TRIANGLES, 0, 3);
+    webGL2.drawArrays(webGL2.TRIANGLES, 0, shape.vertices.length);
     //---------------------------------------------------------------------------------
     // Drawing annotations on auxiliary canvas.
     let auxCanvas = $('#aux-canvas')[0];
@@ -155,8 +181,8 @@ export function renderShapeWithWebGL2(shape, width, height, canvas) {
     clipSpaceCanvas.height = 150 * devicePixelRatio;
     let vertexes2D = FromClipSpaceTo2DCanvasCoordinatesSystem(new Array(...shape.vertices), clipSpaceCanvas);
     clipSpaceContext.clearRect(0, 0, clipSpaceCanvas.width, clipSpaceCanvas.height);
-    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 0], vertexes2D[1 + 2 * 0], 5, shape.colors.slice(0, 3));
-    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 1], vertexes2D[1 + 2 * 1], 5, shape.colors.slice(3, 6));
-    drawPoint(clipSpaceContext, vertexes2D[0 + 2 * 2], vertexes2D[1 + 2 * 2], 5, shape.colors.slice(6, 9));
+    vertexes2D.forEach((vertex, index) => {
+        drawPoint(clipSpaceContext, vertexes2D[0 + 2 * index], vertexes2D[1 + 2 * index], 5, shape.colors.slice(3 * index, 3 + 3 * index));
+    });
     //---------------------------------------------------------------------------------
 }

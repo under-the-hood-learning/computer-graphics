@@ -18,55 +18,130 @@
 
             <div id="geometries-painel" class="">
 
-                <div class="object-image-button">
+                <button id="draw-triangle" class="object-image-button">
                     <img class="object-type-image" src="./assets/triangle.png">
-                </div>
+                </button>
     
-                <div class="object-image-button">
+                <button id="draw-square" class="object-image-button">
                     <img class="object-type-image" src="./assets/square.png">
-                </div>
+                </button>
     
-                <div class="object-image-button">
+                <button id="draw-polygon" class="object-image-button">
                     <img class="object-type-image" src="./assets/polygon.png">
-                </div>
+                </button>
+                
     
             </div>
 
-            <div id="clip-space-container">
+            <div id="clip-space-controls">
+
+                <div id="triangle-vertices" class="vertices-control" >
+                    <div class="coordinates">
+                        <span class="control-description">vertex</span> 
+                        <div class="vertex-coordinate" style="color: white;">x</div>
+                        <div class="vertex-coordinate" style="color: white;">y</div>                         
+                        <div class="vertex-coordinate" style="color: white;">color</div>           
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >1</span> 
+                        <input data-index=0 data-coordinate=0 type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
+                        <input data-index=0 data-coordinate=1 type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input  data-index="0" type="color" value="#ff0000"  class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >2</span> 
+                        <input data-index=1 data-coordinate=0 type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
+                        <input data-index=1 data-coordinate=1 type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="1" type="color" value="#1dff00" class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >3</span> 
+                        <input data-index=2 data-coordinate=0 type="number" min="-1.00" max="1.00" value="-0.00" step="0.05" class="vertex-coordinate">                
+                        <input data-index=2 data-coordinate=1 type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="2" type="color" value="#0015ff" class="vertex-color"></div>
+                    </div>
+                </div>
+
+                <div id="square-vertices" class="vertices-control" style="display: none;">
+                    <div class="coordinates">
+                        <span class="control-description">vertex</span> 
+                        <div class="vertex-coordinate" style="color: white;">x</div>
+                        <div class="vertex-coordinate" style="color: white;">y</div>                         
+                        <div class="vertex-coordinate" style="color: white;">color</div>           
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >1</span> 
+                        <input type="number" data-index="0" data-coordinate="0" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="0" data-coordinate="1" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="0" type="color" value="#A799FF"  class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >2</span> 
+                        <input type="number" data-index="1" data-coordinate="0" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="1" data-coordinate="1" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="1" type="color" value="#583E7A" class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >3</span> 
+                        <input type="number" data-index="2" data-coordinate="0" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="2" data-coordinate="1" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="2" type="color" value="#583E7A" class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >4</span> 
+                        <input type="number" data-index="3" data-coordinate="0" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="3" data-coordinate="1" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="3" type="color" value="#A799FF" class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >5</span> 
+                        <input type="number" data-index="4" data-coordinate="0" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="4" data-coordinate="1" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="4" type="color" value="#583E7A" class="vertex-color"></div>
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >6</span> 
+                        <input type="number" data-index="5" data-coordinate="0" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
+                        <input type="number" data-index="5" data-coordinate="1" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
+                        <div class="center"><input data-index="5" type="color" value="#A799FF" class="vertex-color"></div>
+                    </div>
                 
-                <div id="clip-space-controls">
+                </div>
 
-                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                        <div class="coordinates">
-                            <span class="control-description">vertex</span> 
-                            <div class="vertex-coordinate" style="color: white;">x</div>
-                            <div class="vertex-coordinate" style="color: white;">y</div>                         
-                            <div class="vertex-coordinate" style="color: white;">color</div>           
-                        </div>
-                        <div class="coordinates">
-                            <span class="control-description" >1</span> 
-                            <input id="vertexA-X" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">                
-                            <input id="vertexA-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
-                            <div class="center"><input id="vertexA-color" data-index="0" type="color" value="#ff0000"  class="vertex-color"></div>
-                        </div>
-                        <div class="coordinates">
-                            <span class="control-description" >2</span> 
-                            <input id="vertexB-X" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
-                            <input id="vertexB-Y" type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
-                            <div class="center"><input id="vertexB-color" data-index="1" type="color" value="#1dff00" class="vertex-color"></div>
-                        </div>
-                        <div class="coordinates">
-                            <span class="control-description" >3</span> 
-                            <input id="vertexC-X" type="number" min="-1.00" max="1.00" value="-0.00" step="0.05" class="vertex-coordinate">                
-                            <input id="vertexC-Y" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
-                            <div class="center"><input id="vertexC-color" data-index="2" type="color" value="#0015ff" class="vertex-color"></div>
-                        </div>
-                        
-
+                <div id="polygon-vertices" class="vertices-control" style="display: none;">
+                    <div class="coordinates">
+                        <span class="control-description">vertex</span> 
+                        <div class="vertex-coordinate" style="color: white;">x</div>
+                        <div class="vertex-coordinate" style="color: white;">y</div>                                   
+                    </div>
+                    <div class="coordinates">
+                        <span class="control-description" >center</span> 
+                        <input class="circle-center" data-coordinate=0 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">                
+                        <input class="circle-center" data-coordinate=1 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">
+                    </div>
+                    <div class="polygon-coordinates">
+                        <div class="vertex-coordinate" style="color: white;">vertices</div>        
+                        <input id="number-of-vertices" type="number" min="0" max="100" value="8" step="1" class="vertex-coordinate">
+                    </div>
+                    <div class="polygon-coordinates">
+                        <div class="vertex-coordinate" style="color: white;">radius</div>        
+                        <input id="circle-radius" type="number" min="-1.00" max="1.00" value="0.00" step="0.05" class="vertex-coordinate">
+                    </div>
+                    <div class="polygon-coordinates">
+                 
+                        <div class="vertex-coordinate" style="color: white;">color</div>  
+                        <div id="circle-color" class="center"><input type="color" value="#A799FF"  class="vertex-color"></div>                       
                     </div>
 
+
+
                 </div>
-                
+
+
+            </div>
+
+            <div id="clip-space-container">
+                <p style="margin: 0;">Clip Space</p>
                 <div id="clip-space-box">
                     <canvas id="clip-space-canvas"></canvas>
                 </div>
@@ -76,8 +151,8 @@
             <div id="screen-space-controls">
 
                 <div class="parameter-controler">
-                    <span class="control-description" style="color: blue;">Canvas Width</span>   
-                    <input id="canvas-width" oninput="{}" type="range" min="0" max="100" value="100" class="" />
+                    <span class="control-description" style="color: blue;">Screen Width</span>   
+                    <input id="canvas-width" oninput="{}" type="range" min="0" max="100" value="29" class="" />
                     <div class="range-current-value">
         
                         <output id="width-in-pixels"></output>
@@ -86,8 +161,8 @@
                     </div>
                 </div>
                 <div class="parameter-controler">
-                    <span class="control-description" style="color: blue;">Canvas Height</span>      
-                    <input id="canvas-height" type="range" min="0" max="100" value="100" class="" />
+                    <span class="control-description" style="color: blue;">Screen Height</span>      
+                    <input id="canvas-height" type="range" min="0" max="100" value="50" class="" />
                     <div class="range-current-value">
         
                         <output id="height-in-pixels"></output>
@@ -96,7 +171,7 @@
                     </div>
                 </div>
                 <div class="parameter-controler">
-                    <span class="control-description" style="color: rgb(255, 136, 0);">devicePixelRatio</span>      
+                    <span class="control-description" >devicePixelRatio</span>      
                     <input id="device-pixel-ratio" type="range" min="0" max="1" value="1.00" step="0.01" class="" />
                     <div class="range-current-value">
         
@@ -107,7 +182,7 @@
         
             </div>
 
-            <div id="error-box">
+            <div id="error-box" style="display: none;">
                 <span class="error-box-title">Error log:</span>
                 <span class="error-description"></span>            
             </div>

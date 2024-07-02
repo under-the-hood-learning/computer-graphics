@@ -43,7 +43,20 @@ body {
 
     background-color: #3d3535d6;
     border: 1px solid white;
+    color: rgba(255, 255, 255, 0.801);
 
+}
+
+#clip-space-controls {
+
+    width: 100%;
+    height: 15vh;
+    padding: 20px 10px;
+    background-color: #3d3535d6;
+    border: 1px solid white;
+
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #clip-space-canvas {
@@ -151,7 +164,7 @@ body {
     left: 0;
     top: 0;
     height: 100%;
-    width: max-content;
+    width: 17vw;
     /* overflow-y: scroll; */
     padding: 0vh 2vw;
     margin: 0 10px;
@@ -159,7 +172,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5vh;
+    gap: 2vh;
 
 }
 
@@ -284,12 +297,32 @@ body {
     font-size: 14px;
 }
 
+
+.polygon-coordinates {
+    
+    width: 100%;
+
+    display: inline-flex;
+    justify-content: center;
+    gap: 15px;
+
+    font-size: 14px;
+}
+
+.polygon-coordinates .center {
+
+    width: 60px;
+
+}
+
 .control-description {
     width: 100%;
     display: inline-flex;
     justify-content: center;
     padding: 5px 5px;
     color: rgba(255, 255, 255, 0.733);
+
+    font-size: 14px;
 }
 
 .center {
@@ -436,3 +469,15 @@ option, select{
     font-size: 14px;
     margin: 0;
 }
+
+.vertices-control {
+
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    gap: 5px;
+
+}
+
+
