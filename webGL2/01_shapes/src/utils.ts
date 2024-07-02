@@ -17,7 +17,7 @@ export let rgbToHex = function(rgbArray : Uint8Array) {
         // Convert each number to a two-digit hexadecimal string
         let hex = value.toString(16);
         return  hex.length === 1 ? '0' + hex : hex;
-        
+
     }).join('');
 
 
@@ -34,7 +34,7 @@ export let extractNumbers = function (input : string) {
 
 export let drawPoint = function(context : CanvasRenderingContext2D, x : number, y : number, size : number, color : Uint8Array) {
 
-    let radius = size;
+    let radius = size * devicePixelRatio;
     let hexColor = rgbToHex(color);
 
     context.beginPath();

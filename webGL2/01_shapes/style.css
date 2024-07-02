@@ -119,15 +119,10 @@ body {
 
 #error-box {
     
-    display: flex;
-    flex-direction: column;
+    display: inline-flex;
 
-    bottom: 40px;
-    left: 40px;
-
-    width: max-content;
-    max-width: 100%;
-    min-width: 200px;
+    width: 100%;
+    white-space: nowrap;
 
     overflow-x: auto;
 
@@ -156,18 +151,16 @@ body {
     z-index: 2;
     left: 0;
     top: 0;
-    
     height: 100%;
-    width: max-content;
-
-    padding: 5vh 1vw;
-    margin: 0 40px;
-
+    width: 20vw;
+    /* overflow-y: scroll; */
+    padding: 0vh 2vw;
+    margin: 0 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 3vh;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh;
 
 }
 
@@ -404,4 +397,22 @@ option, select{
 .object-type-image {
     width: 100%;
     height: 100%;
+}
+
+.range-current-value {
+
+    width: 100%;
+    padding-bottom: 15px;
+
+    display: inline-flex;
+    justify-content: center;
+    gap: 30px;
+
+    font-weight: 300;
+}
+
+.range-current-value {
+    color: white;
+    font-size: 14px;
+    margin: 0;
 }

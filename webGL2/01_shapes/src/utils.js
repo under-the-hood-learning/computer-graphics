@@ -21,7 +21,7 @@ export let extractNumbers = function (input) {
     return parseFloat(numericString);
 };
 export let drawPoint = function (context, x, y, size, color) {
-    let radius = size;
+    let radius = size * devicePixelRatio;
     let hexColor = rgbToHex(color);
     context.beginPath();
     context.arc(x, y, radius, 0, Math.PI * 2); // x, y, radius, startAngle, endAngle

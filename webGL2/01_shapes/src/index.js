@@ -2,11 +2,24 @@ import * as controllers from './controllers.js';
 import { drawPoint, FromClipSpaceTo2DCanvasCoordinatesSystem } from './utils.js';
 import objects from './objects.js';
 import { config } from './config.js';
+//---------------------------------------------------------------------------------
+// Initializing controllers
+$('#width-in-pixels').html(String(config.width_in_pixels.toFixed(2)) + "px");
+$('#width-proportion').html(String((100 * config.width_in_pixels / window.innerWidth).toFixed(0)) + "%");
+$('#height-in-pixels').html(String(config.height_in_pixels.toFixed(2)) + "px");
+$('#height-proportion').html(String((100 * config.height_in_pixels / window.innerHeight).toFixed(0)) + "%");
+let devicePixelRelationController = document.getElementById("device-pixel-ratio");
+devicePixelRelationController.max = devicePixelRatio.toString();
+devicePixelRatio = 1.00;
+let devicePixelRelationValue = document.getElementById("device-pixel-ratio-value");
+devicePixelRelationValue.value = devicePixelRatio.toFixed(2).toString();
+//---------------------------------------------------------------------------------
 const myShape = shapesAndColors(window.innerWidth, window.innerHeight, config.scale, config.clipPositionX, config.clipPositionY, objects.triangleVertices, objects.rgbTriangleColors);
+controllers.showError("It's everything good.");
 export function shapesAndColors(width, height, scale, clipPositionX, clipPositionY, vertexes, colors) {
     const canvas = document.getElementById('demo-canvas');
     if (!(canvas instanceof HTMLCanvasElement)) {
-        controllers.showError("You've just made a terrible mistake!");
+        controllers.showError("Something went wrong.");
         return;
     }
     const webGL2 = canvas.getContext('webgl2');
@@ -29,20 +42,13 @@ export function shapesAndColors(width, height, scale, clipPositionX, clipPositio
 
         out vec3 fragmentColor;
 
-        uniform vec2 canvasSize;
-        uniform vec2 shapeLocation;
-        uniform float shapeSize;
-
         void main() {
 
             fragmentColor = vertexColor;
 
-            vec2 finalVertexPosition = vertexPosition * shapeSize + shapeLocation;
-            vec2 clipPosition = (finalVertexPosition / canvasSize) * 2.0 - 1.0;
+            gl_Position = vec4(vertexPosition, 0.0, 1.0);
 
-            gl_Position = vec4(clipPosition, 0.0, 1.0);
         }`;
-    // console.log(vertexShaderSourceCode);
     const vertexShader = webGL2.createShader(webGL2.VERTEX_SHADER);
     webGL2.shaderSource(vertexShader, vertexShaderSourceCode);
     webGL2.compileShader(vertexShader);
@@ -70,8 +76,6 @@ export function shapesAndColors(width, height, scale, clipPositionX, clipPositio
     // Get references to webGL program variables.
     const vertexPositionAttributeLocation = webGL2.getAttribLocation(webGL2TriangleProgram, 'vertexPosition');
     const vertexColorAttributeLocation = webGL2.getAttribLocation(webGL2TriangleProgram, 'vertexColor');
-    const shapeSizeUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'shapeSize');
-    const shapeLocationUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'shapeLocation');
     const canvasSizeUniform = webGL2.getUniformLocation(webGL2TriangleProgram, 'canvasSize');
     //---------------------------------------------------------------------------------
     // devicePixelRatio = 1;
@@ -93,11 +97,9 @@ export function shapesAndColors(width, height, scale, clipPositionX, clipPositio
     webGL2.bindVertexArray(null);
     //---------------------------------------------------------------------------------
     webGL2.uniform2f(canvasSizeUniform, canvas.width, canvas.height);
-    webGL2.uniform1f(shapeSizeUniform, scale);
-    webGL2.uniform2f(shapeLocationUniform, ((clipPositionX + 1) / 2) * canvas.width, ((clipPositionY + 1) / 2) * canvas.height);
     webGL2.drawArrays(webGL2.TRIANGLES, 0, 3);
     //---------------------------------------------------------------------------------
-    // Drawing notes on auxiliary canvas.
+    // Drawing annotations on auxiliary canvas.
     let auxCanvas = $('#aux-canvas')[0];
     let auxCanvasContext = auxCanvas.getContext('2d');
     auxCanvas.style.width = `${width}px`;
@@ -106,12 +108,11 @@ export function shapesAndColors(width, height, scale, clipPositionX, clipPositio
     auxCanvas.height = height * devicePixelRatio;
     const text = "Screen space";
     const fontSize = 20 * devicePixelRatio;
+    const textWidth = auxCanvasContext.measureText(text).width;
+    const x = (auxCanvas.width - textWidth * devicePixelRatio - 80 * devicePixelRatio);
+    const y = fontSize;
     auxCanvasContext.font = `${fontSize}px Arial`;
     auxCanvasContext.fillStyle = 'white';
-    // Calculate the position to draw the text
-    const textWidth = auxCanvasContext.measureText(text).width;
-    const x = (canvas.width - textWidth - 10); // 10 pixels padding from the right edge
-    const y = fontSize; // Drawing the text at the font size height from the top edge
     // Draw the text on the canvas
     auxCanvasContext.fillText(text, x, y);
     //---------------------------------------------------------------------------------
