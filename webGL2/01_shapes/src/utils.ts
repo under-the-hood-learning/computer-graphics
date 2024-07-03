@@ -18,25 +18,27 @@ export let showError = function(errorText: string) {
     errorBoxDiv.appendChild(errorElement);
 }
 
-export let buildCircleVertexBuffer = function() {
+export let buildPolygonVertexBuffer = function() {
 
     const vertexData = [];
 
-    const angle_increment = (Math.PI * 2 / config.circle_segment_count);
+    const angle_increment = (Math.PI * 2 / config.polygon_segment_count);
 
-    for (let i = 0; i < config.circle_segment_count; i++) {
+    const radius = config.polygon_radius;
+
+    for (let i = 0; i < config.polygon_segment_count; i++) {
         
         const vertex1Angle = i * angle_increment;
         const vertex2Angle = (i + 1) * angle_increment;
         
-        const x1 = Math.cos(vertex1Angle)/10;
-        const y1 = Math.sin(vertex1Angle)/10;
+        const x1 = Math.cos(vertex1Angle) * radius;
+        const y1 = Math.sin(vertex1Angle) * radius;
 
-        const x2 = Math.cos(vertex2Angle)/10;
-        const y2 = Math.sin(vertex2Angle)/10;
+        const x2 = Math.cos(vertex2Angle) * radius;
+        const y2 = Math.sin(vertex2Angle) * radius;
 
-        let centerX = config.circle_center[0]; 
-        let centerY = config.circle_center[1];
+        let centerX = config.polygon_center[0]; 
+        let centerY = config.polygon_center[1];
 
         vertexData.push(
            centerX , centerY, 
@@ -54,25 +56,24 @@ export let buildCircleVertexBuffer = function() {
 
 }
 
-export let buildCircleColorBuffer = function() {
+export let buildPolygonColorBuffer = function(centerColor = [255, 255, 255], verticesColor = [120, 135, 80]) {
 
     const vertexData = [];
-    for (let i = 0; i < config.circle_segment_count; i++) {
+    for (let i = 0; i < config.polygon_segment_count; i++) {
 
         vertexData.push(
-            255, 255, 255
+            ... centerColor
         );
 
         vertexData.push(
-            255, 255, 255
+            ... verticesColor
         );
 
         vertexData.push(
-            255, 255, 255
+            ... verticesColor
         );
 
     }
-
 
     return vertexData;
 

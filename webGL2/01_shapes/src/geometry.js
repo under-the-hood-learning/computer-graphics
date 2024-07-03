@@ -1,4 +1,4 @@
-import { buildCircleColorBuffer, buildCircleVertexBuffer } from "./utils.js";
+import { buildPolygonColorBuffer, buildPolygonVertexBuffer } from "./utils.js";
 export default {
     triangleVertices: [
         -0.5, -0.5,
@@ -26,6 +26,6 @@ export default {
         88, 62, 122,
         167, 153, 255
     ],
-    circleVertices: buildCircleVertexBuffer(),
-    circleColors: buildCircleColorBuffer(),
+    polygonVertices: buildPolygonVertexBuffer(),
+    polygonColors: buildPolygonColorBuffer(),
 };

@@ -1,5 +1,5 @@
 import config from "./config.js";
-import { buildCircleColorBuffer, buildCircleVertexBuffer } from "./utils.js";
+import { buildPolygonColorBuffer, buildPolygonVertexBuffer } from "./utils.js";
 
 export default {
 
@@ -33,8 +33,8 @@ export default {
         167, 153, 255
     ],
 
-    circleVertices : buildCircleVertexBuffer(),
+    polygonVertices : buildPolygonVertexBuffer(),
 
-    circleColors: buildCircleColorBuffer(),
+    polygonColors: buildPolygonColorBuffer(),
 
 } 

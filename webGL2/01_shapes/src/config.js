@@ -7,6 +7,9 @@ export default {
     height_in_pixels: window.innerHeight / 2, // canvas/screen space width 
     canvas: $('#demo-canvas')[0],
     shape: new obj.Shape([], []),
-    circle_segment_count: 8,
-    circle_center: [0, 0] // float ranging from -1 to 1
+    polygon_segment_count: 8,
+    polygon_center: [0, 0], // float ranging from -1 to 1
+    polygon_radius: 1 / 2, // float ranging from -1 to 1
+    polygon_vertices_color: "#788750",
+    polygon_center_color: "#ffffff",
 };

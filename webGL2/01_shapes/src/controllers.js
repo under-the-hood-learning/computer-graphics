@@ -1,6 +1,6 @@
 import config from "./config.js";
 import geometry from "./geometry.js";
-import { buildCircleVertexBuffer, renderShapeWithWebGL2 } from "./utils.js";
+import { buildPolygonVertexBuffer, buildPolygonColorBuffer, renderShapeWithWebGL2 } from "./utils.js";
 import { hexToRgbArray } from "./utils.js";
 import objects from "./objects.js";
 export function initializeControllers() {
@@ -72,9 +72,33 @@ export let updateSquareVertexColor = function (new_color, vertexNumber) {
     geometry.squareColors[2 + 3 * vertexNumber] = rgbArray[2];
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
-export let updateCircleCenter = function (new_value, coordinate) {
-    config.circle_center[coordinate] = Number(new_value);
-    config.shape = new objects.Shape(buildCircleVertexBuffer(), geometry.circleColors);
+export let updatePolygonCenter = function (new_value, coordinate) {
+    config.polygon_center[coordinate] = Number(new_value);
+    config.shape = new objects.Shape(buildPolygonVertexBuffer(), buildPolygonColorBuffer());
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updatePolygonVerticesNumber = function (new_value) {
+    config.polygon_segment_count = Number(new_value);
+    config.shape = new objects.Shape(buildPolygonVertexBuffer(), buildPolygonColorBuffer());
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updatePolygonExternalRadius = function (new_value) {
+    config.polygon_radius = Number(new_value);
+    config.shape = new objects.Shape(buildPolygonVertexBuffer(), buildPolygonColorBuffer());
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updatePolygonVerticesColor = function (new_value) {
+    config.polygon_vertices_color = new_value;
+    let colorVerticesRGB = hexToRgbArray(config.polygon_vertices_color);
+    let colorCenterRGB = hexToRgbArray(config.polygon_center_color);
+    config.shape = new objects.Shape(buildPolygonVertexBuffer(), buildPolygonColorBuffer(colorCenterRGB, colorVerticesRGB));
+    renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
+};
+export let updatePolygonCenterColor = function (new_value) {
+    config.polygon_center_color = new_value;
+    let colorVerticesRGB = hexToRgbArray(config.polygon_vertices_color);
+    let colorCenterRGB = hexToRgbArray(config.polygon_center_color);
+    config.shape = new objects.Shape(buildPolygonVertexBuffer(), buildPolygonColorBuffer(colorCenterRGB, colorVerticesRGB));
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
 export let updateDevicePixelRatio = function (new_value) {
@@ -96,7 +120,7 @@ export let drawSquare = function () {
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
 };
 export let drawPolygon = function () {
-    config.shape = new objects.Shape(geometry.circleVertices, geometry.circleColors);
+    config.shape = new objects.Shape(geometry.polygonVertices, geometry.polygonColors);
     $(".vertices-control").css('display', 'none');
     $("#polygon-vertices").css('display', 'flex');
     renderShapeWithWebGL2(config.shape, config.width_in_pixels, config.height_in_pixels, config.canvas);
@@ -125,10 +149,26 @@ $('#square-vertices').find('.vertex-color').on('input', (event) => {
     let vertexIndex = element.dataset.index;
     updateSquareVertexColor(element.value, Number(vertexIndex));
 });
-$('.circle-center').on('input', (event) => {
+$('.polygon-center').on('input', (event) => {
     let element = event.target;
     let coordinate = element.dataset.coordinate;
-    updateCircleCenter(element.value, coordinate);
+    updatePolygonCenter(element.value, coordinate);
+});
+$('#polygon-vertices-number').on('input', (event) => {
+    let element = event.target;
+    updatePolygonVerticesNumber(element.value);
+});
+$('#polygon-radius').on('input', (event) => {
+    let element = event.target;
+    updatePolygonExternalRadius(element.value);
+});
+$('#polygon-center-color').on('input', (event) => {
+    let element = event.target;
+    updatePolygonCenterColor(element.value);
+});
+$('#polygon-vertices-color').on('input', (event) => {
+    let element = event.target;
+    updatePolygonVerticesColor(element.value);
 });
 document.getElementById("canvas-width").addEventListener('input', (event) => {
     let element = event.target;

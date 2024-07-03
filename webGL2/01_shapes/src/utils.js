@@ -11,30 +11,31 @@ export let showError = function (errorText) {
     errorElement.innerText = errorText;
     errorBoxDiv.appendChild(errorElement);
 };
-export let buildCircleVertexBuffer = function () {
+export let buildPolygonVertexBuffer = function () {
     const vertexData = [];
-    const angle_increment = (Math.PI * 2 / config.circle_segment_count);
-    for (let i = 0; i < config.circle_segment_count; i++) {
+    const angle_increment = (Math.PI * 2 / config.polygon_segment_count);
+    const radius = config.polygon_radius;
+    for (let i = 0; i < config.polygon_segment_count; i++) {
         const vertex1Angle = i * angle_increment;
         const vertex2Angle = (i + 1) * angle_increment;
-        const x1 = Math.cos(vertex1Angle) / 10;
-        const y1 = Math.sin(vertex1Angle) / 10;
-        const x2 = Math.cos(vertex2Angle) / 10;
-        const y2 = Math.sin(vertex2Angle) / 10;
-        let centerX = config.circle_center[0];
-        let centerY = config.circle_center[1];
+        const x1 = Math.cos(vertex1Angle) * radius;
+        const y1 = Math.sin(vertex1Angle) * radius;
+        const x2 = Math.cos(vertex2Angle) * radius;
+        const y2 = Math.sin(vertex2Angle) * radius;
+        let centerX = config.polygon_center[0];
+        let centerY = config.polygon_center[1];
         vertexData.push(centerX, centerY);
         vertexData.push(x1 + centerX, y1 + centerY);
         vertexData.push(x2 + centerX, y2 + centerY);
     }
     return vertexData;
 };
-export let buildCircleColorBuffer = function () {
+export let buildPolygonColorBuffer = function (centerColor = [255, 255, 255], verticesColor = [120, 135, 80]) {
     const vertexData = [];
-    for (let i = 0; i < config.circle_segment_count; i++) {
-        vertexData.push(255, 255, 255);
-        vertexData.push(255, 255, 255);
-        vertexData.push(255, 255, 255);
+    for (let i = 0; i < config.polygon_segment_count; i++) {
+        vertexData.push(...centerColor);
+        vertexData.push(...verticesColor);
+        vertexData.push(...verticesColor);
     }
     return vertexData;
 };

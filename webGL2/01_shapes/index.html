@@ -48,6 +48,7 @@
                         <input data-index=0 data-coordinate=1 type="number" min="-1.00" max="1.00" value="-0.50" step="0.05" class="vertex-coordinate">
                         <div class="center"><input  data-index="0" type="color" value="#ff0000"  class="vertex-color"></div>
                     </div>
+                    
                     <div class="coordinates">
                         <span class="control-description" >2</span> 
                         <input data-index=1 data-coordinate=0 type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">                
@@ -109,29 +110,32 @@
                 </div>
 
                 <div id="polygon-vertices" class="vertices-control" style="display: none;">
-                    <div class="coordinates">
-                        <span class="control-description">vertex</span> 
-                        <div class="vertex-coordinate" style="color: white;">x</div>
-                        <div class="vertex-coordinate" style="color: white;">y</div>                                   
-                    </div>
-                    <div class="coordinates">
-                        <span class="control-description" >center</span> 
-                        <input class="circle-center" data-coordinate=0 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">                
-                        <input class="circle-center" data-coordinate=1 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">
-                    </div>
+                    <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 1vh;">
+                        <div class="circle-coordinates">
+                            <span class="control-description">vertex</span> 
+                            <div class="vertex-coordinate" style="color: white;">x</div>
+                            <div class="vertex-coordinate" style="color: white;">y</div>                                   
+                        </div>
+                        <div class="circle-coordinates">
+                            <span class="control-description" >center</span> 
+                            <input class="polygon-center" data-coordinate=0 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">                
+                            <input class="polygon-center" data-coordinate=1 type="number" min="-1.00" max="1.00" value="0" step="0.05" class="vertex-coordinate">
+                        </div>
+                    </div>   
                     <div class="polygon-coordinates">
                         <div class="vertex-coordinate" style="color: white;">vertices</div>        
-                        <input id="number-of-vertices" type="number" min="0" max="100" value="8" step="1" class="vertex-coordinate">
+                        <input id="polygon-vertices-number" type="number" min="0" max="100" value="8" step="1" class="vertex-coordinate">
                     </div>
                     <div class="polygon-coordinates">
                         <div class="vertex-coordinate" style="color: white;">radius</div>        
-                        <input id="circle-radius" type="number" min="-1.00" max="1.00" value="0.00" step="0.05" class="vertex-coordinate">
+                        <input id="polygon-radius" type="number" min="-1.00" max="1.00" value="0.50" step="0.05" class="vertex-coordinate">
                     </div>
                     <div class="polygon-coordinates">
-                 
                         <div class="vertex-coordinate" style="color: white;">color</div>  
-                        <div id="circle-color" class="center"><input type="color" value="#A799FF"  class="vertex-color"></div>                       
+                        <div id="polygon-center-color" class="center"><input type="color" value="#ffffff"  class="vertex-color"></div>                       
+                        <div id="polygon-vertices-color" class="center"><input type="color" value="#788750"  class="vertex-color"></div>                       
                     </div>
+                    
 
 
 
